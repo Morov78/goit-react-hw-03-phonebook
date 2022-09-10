@@ -1,0 +1,10 @@
+.filter__label {
+  display: flex;
+  align-items: unset;
+  font-size: 30px;
+  gap: 10px;
+  margin-top: 10px;
+}
+.filter__input {
+  font-size: 20px;
+}
