@@ -6,12 +6,7 @@ import { Filter } from './Filter/Filter';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
   handleChangeFilter = event => {
@@ -38,6 +33,29 @@ class App extends Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    const prevContacts = prevState.contacts;
+    const nextContacts = this.state.contacts;
+    if (prevContacts !== nextContacts) {
+      localStorage.setItem('phonebookContacts', JSON.stringify(nextContacts));
+    }
+  }
+  //добавив таймаут, щоб було видно коли читає дані з localStorage
+  componentDidMount() {
+    try {
+      const localContacts = localStorage.getItem('phonebookContacts');
+      if (localContacts) {
+        setTimeout(() => {
+          const contacts = JSON.parse(localContacts);
+          this.setState({ contacts });
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('Get state error: ', error.message);
+    }
+  }
+
   render() {
     const { contacts, filter } = this.state;
     const filterContacts = contacts.filter(({ name }) =>
