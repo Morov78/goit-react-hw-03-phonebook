@@ -4,11 +4,13 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 class App extends Component {
   state = {
     contacts: [],
     filter: '',
   };
+
   handleChangeFilter = event => {
     const { value } = event.currentTarget;
     this.setState({ filter: value });
@@ -21,6 +23,7 @@ class App extends Component {
       Notify.warning(`${name} is already in contacts`);
       return;
     }
+
     const newContact = {
       id: nanoid(),
       name,
@@ -28,6 +31,7 @@ class App extends Component {
     };
     this.setState({ contacts: [newContact, ...contacts] });
   };
+
   onDeleteContactById = contactId => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
@@ -37,14 +41,17 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const prevContacts = prevState.contacts;
     const nextContacts = this.state.contacts;
+
     if (prevContacts !== nextContacts) {
       localStorage.setItem('phonebookContacts', JSON.stringify(nextContacts));
     }
   }
+
   //добавив таймаут, щоб було видно коли читає дані з localStorage
   componentDidMount() {
     try {
       const localContacts = localStorage.getItem('phonebookContacts');
+
       if (localContacts) {
         setTimeout(() => {
           const contacts = JSON.parse(localContacts);
@@ -61,6 +68,7 @@ class App extends Component {
     const filterContacts = contacts.filter(({ name }) =>
       name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
     );
+
     return (
       <div
         style={{

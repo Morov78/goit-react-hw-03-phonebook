@@ -1,26 +1,29 @@
 import { Component } from 'react';
 import css from './ContactForm.module.css';
+
 class ContactForm extends Component {
   state = {
     name: '',
     number: '',
   };
+
   handleChange = event => {
     const { name, value } = event.currentTarget;
     this.setState({ [name]: value });
   };
+
   handleSubmit = event => {
     event.preventDefault();
     const { name, number } = this.state;
     this.props.onSubmit(name, number);
     this.setState({ name: '', number: '' });
   };
+
   render() {
     const { name, number } = this.state;
     return (
       <form className={css.form} onSubmit={this.handleSubmit}>
         <div className={css.form__wrap}>
-          {' '}
           <label className={css.form__label}>
             Name
             <input
@@ -34,6 +37,7 @@ class ContactForm extends Component {
               onChange={this.handleChange}
             />
           </label>
+
           <label className={css.form__label}>
             Number
             <input
@@ -56,4 +60,5 @@ class ContactForm extends Component {
     );
   }
 }
+
 export { ContactForm };
